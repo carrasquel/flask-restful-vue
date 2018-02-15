@@ -3,6 +3,7 @@ from app.models import Event
 from app import db
 from app import status
 
+
 class EventAPI(Resource):
 
     def get(self, id):
@@ -43,6 +44,7 @@ class EventAPI(Resource):
         del event['_sa_instance_state']
         
         return event, status.HTTP_202_ACCEPTED
+
 
 class EventListAPI(Resource):
 
