@@ -14,7 +14,8 @@ class Event(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(60))
     description = db.Column(db.String(200))
-    date = db.Column(db.String(20))
+    event_date = db.Column(db.String(20))
+    date = db.Column(db.DateTime())
 
     def __repr__(self):
 

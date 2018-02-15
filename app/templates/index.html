@@ -38,10 +38,13 @@
 					</div>
 
 					<div class="form-group">
-						<input type="date" class="form-control" placeholder="Date" v-model="event.date">
+						<input type="date" class="form-control" placeholder="Date" v-model="event.event_date">
 					</div>
 
-					<button class="btn btn-primary" v-on:click="postEvent">Submit</button>
+					<button class="btn btn-primary" v-on:click="postEvent">
+                        <span v-if="update">Save</span>
+                        <span v-else>Add</span>
+                    </button>
 					
         </div>
 
@@ -60,8 +63,8 @@
 					</h4>
 
 					<h5>
-						<i class="glyphicon glyphicon-calendar" v-if="event.date"></i> 
-						{{ event.date }}
+						<i class="glyphicon glyphicon-calendar" v-if="event.event_date"></i>
+						{{ event.event_date }}
 					</h5>
 
 					<p class="list-group-item-text" v-if="event.description">{{ event.description }}</p>

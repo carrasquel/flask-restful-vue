@@ -8,7 +8,7 @@ new Vue({
   // Here we can register any values or collections that hold data
   // for the application
   data: {
-		event: { name: '', description: '', date: '' },
+		event: { name: '', description: '', event_date: '' },
 		events: [],
 		update: false
 	},
@@ -22,9 +22,9 @@ new Vue({
 
 	// Methods we want to use in our application are registered here
 	methods: {
-		
+
 		clearEvent: function(){
-			this.event = { name: '', description: '', date: '' };
+			this.event = { name: '', description: '', event_date: '' };
 			this.update = false;
 		},
 
@@ -67,7 +67,7 @@ new Vue({
 							console.log(res);
 							this.events.push(res.data);
 							console.log('Event added!');
-							this.event = { name: '', description: '', date: '' };
+							this.clearEvent();
 						},
 						function (err) {
 							console.log(err);

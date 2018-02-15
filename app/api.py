@@ -2,6 +2,7 @@ from flask_restful import reqparse, Resource
 from app.models import Event
 from app import db
 from app import status
+import datetime
 
 
 class EventAPI(Resource):
@@ -11,6 +12,7 @@ class EventAPI(Resource):
         e = Event.query.filter_by(id=id).first()
 
         event = e.__dict__
+        event["date"] = event["date"].isoformat()
         del event['_sa_instance_state']
         
         return event
@@ -29,18 +31,20 @@ class EventAPI(Resource):
         parser = reqparse.RequestParser()
         parser.add_argument('name', type=str, required=True, help='Name cannot be blank!')
         parser.add_argument('description', type=str, required=True, help='Description cannot be blank!')
-        parser.add_argument('date', type=str, required=True, help='Date cannot be blank!')
+        parser.add_argument('event_date', type=str, required=True, help='Date cannot be blank!')
         args = parser.parse_args()
 
         event.name = args["name"]
         event.description = args["description"]
-        event.date = args["date"]
+        event.event_date = args["event_date"]
+        event.date = datetime.datetime.now()
 
         db.session.commit()
 
         e = Event.query.filter_by(id=event.id).first()
 
         event = e.__dict__
+        event["date"] = event["date"].isoformat()
         del event['_sa_instance_state']
         
         return event, status.HTTP_202_ACCEPTED
@@ -55,6 +59,7 @@ class EventListAPI(Resource):
         for e in Event.query.all():
 
             event = e.__dict__
+            event["date"] = event["date"].isoformat()
             del event['_sa_instance_state']
 
             result.append(event)
@@ -66,12 +71,15 @@ class EventListAPI(Resource):
         parser = reqparse.RequestParser()
         parser.add_argument('name', type=str, required=True, help='Name cannot be blank!')
         parser.add_argument('description', type=str, required=True, help='Description cannot be blank!')
-        parser.add_argument('date', type=str, required=True, help='Date cannot be blank!')
+        parser.add_argument('event_date', type=str, required=True, help='Date cannot be blank!')
         args = parser.parse_args()
+
+        now = datetime.datetime.now()
         
         event = Event(name=args["name"],
                       description=args["description"],
-                      date=args["date"])
+                      event_date=args["event_date"],
+                      date=now)
 
         db.session.add(event)
         db.session.commit()
@@ -79,6 +87,7 @@ class EventListAPI(Resource):
         e = Event.query.filter_by(id=event.id).first()
 
         event = e.__dict__
+        event["date"] = event["date"].isoformat()
         del event['_sa_instance_state']
         
         return event, status.HTTP_201_CREATED
